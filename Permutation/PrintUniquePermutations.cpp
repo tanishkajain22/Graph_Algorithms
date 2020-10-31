@@ -1,32 +1,53 @@
+// C++ program to print all the permutation
+// of the given string.
+#include <algorithm>
 #include <iostream>
+#include <string>
 using namespace std;
 
-void printPermutations(string s, int i){
+// count of total permutations
+int total = 0;
 
-    if (i==s.size()- 1){
-        cout<<s<<"\n";
-        return ;
-    }
+void permute(int i, string s)
+{
+	// base case
+	if (i == (s.length() - 1)) {
+		cout << s << endl;
+		total++;
+		return;
+	}
 
-    char c = s[i];
-    for(int j=i; j<s.size(); j++){
-        
-        if (s[i] != s[j] || i==j){
-            s[i] = s[j];
-            s[j] = c;
-            printPermutations(s, i+1);
-            s[j] = s[i];
-            s[i] = c;
-        }
+	char prev = '*';
 
-        else continue;
-    }
-
+	// loop from j = 1 to length of string
+	for (int j = i; j < s.length(); j++) {
+		string temp = s;
+		if (j > i && temp[i] == temp[j])
+			continue;
+		if (prev != '*' && prev == s[j]) {
+			continue;
+		}
+	
+		// swap the elements
+		swap(temp[i], temp[j]);
+		prev = s[j];
+	
+		// recursion call
+		permute(i + 1, temp);
+	}
 }
 
-int main(){
-    string s;
-    cin>>s;
+// Driver code
+int main()
+{
+	string s = "abca";
+	
+	// sort
+	sort(s.begin(), s.end());
 
-    printPermutations(s, 0);
+	// Function call
+	permute(0, s);
+	cout << "Total distinct permutations = " << total
+		<< endl;
+	return 0;
 }
